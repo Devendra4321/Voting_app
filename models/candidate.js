@@ -27,12 +27,12 @@ const candidateScehma = new mongoose.Schema({
         type: Date,
         default: Date.now(),
       },
-      voteCount: {
-        type: Number,
-        default: 0,
-      },
     },
   ],
+  voteCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Candidate = mongoose.model("Candidate", candidateScehma);
