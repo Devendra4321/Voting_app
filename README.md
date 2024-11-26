@@ -4,17 +4,19 @@ This is a backend application for a voting system where users can vote for candi
 
 ## Features
 
-- User sign up and login with Aadhar Card Number and password
+- User signs up and log in with Aadhar Card Number and password
 - User can view the list of candidates
 - User can vote for a candidate (only once)
 - Admin can manage candidates (add, update, delete)
 - Admin cannot vote
+- Get a real-time vote count
 
 ## Technologies Used
 
 - Node.js
 - Express.js
 - MongoDB
+- Socket.IO
 - JSON Web Tokens (JWT) for authentication
 
 ## Installation
@@ -64,3 +66,16 @@ This is a backend application for a voting system where users can vote for candi
 
 ### Change Password
 - `PUT /users/profile/password`: Change user password
+
+### Check Aadharcard Number Unique
+- `GET user/uniqueAadharNumber?aadharCardNumber=`
+
+## User
+
+### Get User
+- `GET /user`: Get all user
+
+## Admin
+
+### Check Admin
+- `GET /user/checkAdmin`: Check admin 
