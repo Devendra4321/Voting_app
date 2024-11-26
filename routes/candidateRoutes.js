@@ -22,7 +22,7 @@ const checkAdminRole = async (userId) => {
 router.post("/", jwtAuthMiddleware, async (req, res) => {
   try {
     if (!(await checkAdminRole(req.user.id))) {
-      return res.status(403).json({ message: "User has no admin role" });
+      return res.json({ statuscode: 403, message: "User has no admin role" });
     }
 
     const data = req.body;
@@ -32,10 +32,14 @@ router.post("/", jwtAuthMiddleware, async (req, res) => {
     const response = await newCandidate.save();
     console.log("New candidate saved!");
 
-    res.status(200).json({ response: response });
+    res.json({
+      statuscode: 200,
+      response: response,
+      message: "Candidate Added!",
+    });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.json({ statuscode: 500, error: "Internal server error" });
   }
 });
 
@@ -112,17 +116,18 @@ router.post("/vote/:candidateID", jwtAuthMiddleware, async (req, res) => {
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found!" });
+      return res.json({ statuscode: 404, message: "User not found!" });
     }
 
     if (user.isVoted) {
-      return res.status(400).json({ message: "You have already voted!" });
+      return res.json({ statuscode: 400, message: "You have already voted!" });
     }
 
     if (user.role === "admin") {
-      return res
-        .status(403)
-        .json({ message: "Admin is not allowed to voting!" });
+      return res.json({
+        statuscode: 403,
+        message: "Admin is not allowed to voting!",
+      });
     }
 
     //update candidate document to record the vote
@@ -134,10 +139,10 @@ router.post("/vote/:candidateID", jwtAuthMiddleware, async (req, res) => {
     user.isVoted = true;
     await user.save();
 
-    res.status(200).json({ message: "Vote recorded successfully!" });
+    res.json({ statuscode: 200, message: "Vote recorded successfully!" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.json({ statuscode: 500, error: "Internal server error" });
   }
 });
 
@@ -169,7 +174,7 @@ router.get("/", async (req, res) => {
   try {
     const candidates = await Candidate.find();
 
-    return res.status(200).json(candidates);
+    return res.status(200).json({ statuscode: 200, candidates: candidates });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
